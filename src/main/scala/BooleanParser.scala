@@ -3,8 +3,8 @@ import scala.util.parsing.combinator.Parsers
 object BooleanParser extends Parsers {
     override type Elem = Token
 
-    def apply(token: Token): Either[BooleanParserError, BooleanAST] = {
-        token match {
+    def apply(tokens: List[Token]): Either[BooleanParserError, BooleanAST] = {
+        tokens.head match {
             case BOOLEAN_VAL(booleanVal) => Right(BooleanValue(booleanVal))
         }
     }
