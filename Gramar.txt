@@ -1,0 +1,5 @@
+<Expr> ::= Value | NOT Value | Expr Op Expr
+
+<Op> ::= AND | OR
+
+<Value> ::= F | T
