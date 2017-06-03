@@ -1,7 +1,9 @@
 import org.scalatest.{FlatSpec, Matchers}
+import BooleanCalculator.evaluate
 
-class ExampleTest extends FlatSpec with Matchers {
-    "List with no elements" should "be Nil" in {
-        true should be(true)
+class BooleanCalculatorTest extends FlatSpec with Matchers {
+
+    "T" should "be true" in {
+        evaluate("T") should be(true)
     }
 }
