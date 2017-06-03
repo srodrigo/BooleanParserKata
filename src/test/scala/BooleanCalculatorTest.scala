@@ -10,4 +10,8 @@ class BooleanCalculatorTest extends FlatSpec with Matchers {
     "F" should "be false" in {
         evaluate("F") should be(false)
     }
+
+    "NOT T" should "be false" in {
+        evaluate("NOT T") should be(false)
+    }
 }
