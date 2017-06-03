@@ -1,5 +1,4 @@
-
-name := "scala-template"
+name := "fp-parser-combinators"
 
 version := "1.0"
 
