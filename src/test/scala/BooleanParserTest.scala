@@ -12,6 +12,6 @@ class BooleanParserTest extends FlatSpec with Matchers {
     }
 
     "NOT T" should "be Boolean Value F" in {
-        BooleanParser(List(NEGATION_OP, BOOLEAN_VAL("F"))).right.get should be(BooleanValue("F"))
+        BooleanParser(List(NEGATION_OP, BOOLEAN_VAL("T"))).right.get should be(BooleanValue("F"))
     }
 }
