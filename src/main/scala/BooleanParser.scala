@@ -17,7 +17,7 @@ object BooleanParser extends Parsers {
     }
 
     private def block: Parser[BooleanAST] = {
-        rep1(booleanExpr) ^^ { case stmtList => stmtList reduceRight BooleanExpr }
+        rep1(booleanExpr) ^^ (exprList => exprList reduceRight BooleanExpr)
     }
 
     private def booleanExpr: Parser[BooleanAST] = {
