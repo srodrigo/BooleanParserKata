@@ -4,6 +4,7 @@ sealed trait Token
 final case class BOOLEAN_VAL(bool: Boolean) extends Token
 case object NEGATION_OP extends Token
 case object AND_OP extends Token
+case object OR_OP extends Token
 
 
 object BooleanLexer extends RegexParsers {
