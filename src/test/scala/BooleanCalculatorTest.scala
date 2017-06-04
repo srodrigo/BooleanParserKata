@@ -16,6 +16,6 @@ class BooleanCalculatorTest extends FlatSpec with Matchers {
     }
 
     "F OR T" should "be true" in {
-        evaluate("F OR T") should be(false)
+        evaluate("F OR T") should be(true)
     }
 }
