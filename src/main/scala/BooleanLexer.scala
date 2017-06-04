@@ -19,7 +19,7 @@ object BooleanLexer extends RegexParsers {
     }
 
     def tokens: Parser[List[Token]] = {
-        phrase(rep1(booleanVal(TRUE) | booleanVal(FALSE) | negationOp))
+        phrase(rep1(booleanVal(TRUE) | booleanVal(FALSE) | negationOp | andOp))
     }
 
     private def booleanVal(bool: String) = {
@@ -29,7 +29,11 @@ object BooleanLexer extends RegexParsers {
         }
     }
 
-    private def negationOp = {
+    private val negationOp = {
         "NOT".r ^^ { _ => NEGATION_OP }
+    }
+
+    private val andOp = {
+        "AND".r ^^ { _ => AND_OP }
     }
 }

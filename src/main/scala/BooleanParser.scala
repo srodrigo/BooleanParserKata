@@ -27,7 +27,14 @@ object BooleanParser extends Parsers {
             case negationOp ~ BOOLEAN_VAL(booleanVal) => BooleanValue(!booleanVal)
         }
 
-        booleanValueAST | negatedBooleanValueAST
+        val andOp = booleanValue ~ AND_OP ~ booleanValue ^^ {
+            case left ~ op ~ right =>
+                AndOp(
+                    BooleanValue(left.bool),
+                    BooleanValue(right.bool))
+        }
+
+        negatedBooleanValueAST | andOp | booleanValueAST
     }
 
     private def booleanValue: Parser[BOOLEAN_VAL] = {
