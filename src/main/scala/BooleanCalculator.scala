@@ -10,8 +10,6 @@ object BooleanCalculator {
     }
 
     private def eval(ast: BooleanAST): Boolean = ast match {
-        case BooleanValue(value) =>
-            if (value == "T") true
-            else false
+        case BooleanValue(value) => value
     }
 }
