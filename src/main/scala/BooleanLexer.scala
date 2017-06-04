@@ -2,6 +2,7 @@ import scala.util.parsing.combinator.RegexParsers
 
 sealed trait Token
 final case class BOOLEAN_VAL(str: String) extends Token
+case object NEGATION_OP extends Token
 
 object BooleanLexer extends RegexParsers {
     def apply(code: String): Either[BooleanLexerError, List[Token]] = {
@@ -12,13 +13,14 @@ object BooleanLexer extends RegexParsers {
     }
 
     def tokens: Parser[List[Token]] = {
-        phrase(rep1(booleanVal("T") | booleanVal("F")))
+        phrase(rep1(booleanVal("T") | booleanVal("F") | negationOp))
     }
 
-    def booleanVal(bool: String): Parser[BOOLEAN_VAL] = {
+    private def booleanVal(bool: String) = {
         "[FT]".r ^^ { str => BOOLEAN_VAL(str) }
     }
-}
 
-trait BooleanCompilationError
-case class BooleanLexerError(msg: String) extends BooleanCompilationError
+    private def negationOp = {
+        "NOT".r ^^ { _ => NEGATION_OP }
+    }
+}

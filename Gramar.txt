@@ -1,4 +1,4 @@
-<Expr> ::= Value | Expr Op Expr
+<Expr> ::= Value Expr | Op Value | Value
 
 <Op> ::= NOT | AND | OR
 
