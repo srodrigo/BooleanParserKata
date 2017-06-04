@@ -5,9 +5,13 @@ class BooleanCalculatorTest extends FlatSpec with Matchers {
 
     "T" should "be true" in {
         evaluate("T") should be(true)
-    
+    }
 
     "NOT T" should "be false" in {
         evaluate("NOT T") should be(false)
+    }
+
+    "T AND F" should "be false" in {
+        evaluate("T AND F") should be(false)
     }
 }
