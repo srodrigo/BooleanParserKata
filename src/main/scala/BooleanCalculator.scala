@@ -13,5 +13,6 @@ object BooleanCalculator {
         case BooleanValue(bool) => bool
         case NotOp(BooleanValue(bool)) => !bool
         case AndOp(BooleanValue(left), BooleanValue(right)) => left && right
+        case OrOp(BooleanValue(left), BooleanValue(right)) => left || right
     }
 }
