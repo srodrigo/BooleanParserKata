@@ -40,6 +40,7 @@ object BooleanParser extends Parsers {
 
 sealed trait BooleanAST
 final case class BooleanValue(bool: Boolean) extends BooleanAST
+final case class AndOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class BooleanExpr(step1: BooleanAST, step2: BooleanAST) extends BooleanAST
 
 class BooleanTokenReader(tokens: Seq[Token]) extends Reader[Token] {
