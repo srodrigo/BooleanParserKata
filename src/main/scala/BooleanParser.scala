@@ -21,7 +21,15 @@ object BooleanParser extends Parsers {
     }
 
     private def booleanExpr: Parser[BooleanAST] = {
-        booleanValue ^^ (booleanVal => BooleanValue(booleanVal.str))
+        val booleanValueAST = booleanValue ^^ (booleanVal => BooleanValue(booleanVal.str))
+
+        val negatedBooleanValueAST = NEGATION_OP ~ booleanValue ^^ {
+            case negationOp ~ BOOLEAN_VAL(booleanVal) =>
+                if (booleanVal == "T") BooleanValue("F")
+                else BooleanValue("T")
+        }
+
+        booleanValueAST | negatedBooleanValueAST
     }
 
     private def booleanValue: Parser[BOOLEAN_VAL] = {
