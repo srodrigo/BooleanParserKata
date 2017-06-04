@@ -34,7 +34,14 @@ object BooleanParser extends Parsers {
                     BooleanValue(right.bool))
         }
 
-        negatedBooleanValueAST | andOp | booleanValueAST
+        val orOp = booleanValue ~ OR_OP ~ booleanValue ^^ {
+            case left ~ op ~ right =>
+                OrOp(
+                    BooleanValue(left.bool),
+                    BooleanValue(right.bool))
+        }
+
+        negatedBooleanValueAST | andOp | orOp | booleanValueAST
     }
 
     private def booleanValue: Parser[BOOLEAN_VAL] = {
@@ -48,6 +55,7 @@ object BooleanParser extends Parsers {
 sealed trait BooleanAST
 final case class BooleanValue(bool: Boolean) extends BooleanAST
 final case class AndOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
+final case class OrOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class NotOp(booleanValue: BooleanValue) extends BooleanAST
 final case class BooleanExpr(step1: BooleanAST, step2: BooleanAST) extends BooleanAST
 
