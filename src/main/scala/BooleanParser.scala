@@ -24,7 +24,7 @@ object BooleanParser extends Parsers {
         val booleanValueAST = booleanValue ^^ (booleanVal => BooleanValue(booleanVal.bool))
 
         val negatedBooleanValueAST = NEGATION_OP ~ booleanValue ^^ {
-            case negationOp ~ BOOLEAN_VAL(booleanVal) => BooleanValue(!booleanVal)
+            case negationOp ~ BOOLEAN_VAL(booleanVal) => NotOp(BooleanValue(booleanVal))
         }
 
         val andOp = booleanValue ~ AND_OP ~ booleanValue ^^ {
@@ -48,6 +48,7 @@ object BooleanParser extends Parsers {
 sealed trait BooleanAST
 final case class BooleanValue(bool: Boolean) extends BooleanAST
 final case class AndOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
+final case class NotOp(booleanValue: BooleanValue) extends BooleanAST
 final case class BooleanExpr(step1: BooleanAST, step2: BooleanAST) extends BooleanAST
 
 class BooleanTokenReader(tokens: Seq[Token]) extends Reader[Token] {
