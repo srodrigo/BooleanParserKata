@@ -1,5 +1,7 @@
-<Expr> ::= Value Expr | Op Value | Value
+<Expr> ::= Expr LogicOp Expr | BooleanOp Expr | Value
 
-<Op> ::= NOT | AND | OR
+<LogicOp> ::= AND | OR
+
+<BooleanOp> ::= NOT
 
 <Value> ::= F | T
