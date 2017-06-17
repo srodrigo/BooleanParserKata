@@ -1,12 +1,16 @@
 object BooleanCalculator {
 
     def evaluate(booleanExpr: String): Boolean = {
+        evaluateAST(buildAST(booleanExpr))
+    }
+
+    private def buildAST(booleanExpr: String) = {
         val ast: Either[Object, BooleanAST] = for {
             tokens <- BooleanLexer(booleanExpr).right
             ast <- BooleanParser(tokens).right
         } yield ast
 
-        evaluateAST(ast.right.get)
+        ast.right.get
     }
 
     private def evaluateAST(ast: BooleanAST): Boolean = ast match {
