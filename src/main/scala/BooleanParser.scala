@@ -24,15 +24,15 @@ object BooleanParser extends Parsers {
     }
 
     private def booleanExpr: Parser[BooleanAST] = {
-        negatedBooleanValue | andOp | orOp | booleanValue
+        andOp | orOp | booleanValue
     }
 
     private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
     private def falseValue: Parser[BooleanAST] = FALSE_VAL ^^^ FalseValue
-    private def booleanValue: Parser[BooleanAST] = trueValue | falseValue
+    private def booleanValue: Parser[BooleanAST] = trueValue | falseValue | negatedBooleanValue
 
-    private val negatedBooleanValue = NEGATION_OP ~ booleanExpr ^^ {
-        case negationOp ~ booleanExpr => NotOp(booleanExpr)
+    private val negatedBooleanValue = NEGATION_OP ~ booleanValue ^^ {
+        case negationOp ~ booleanValue => NotOp(booleanValue)
     }
 
     private val andOp = booleanValue ~ AND_OP ~ booleanExpr ^^ {
