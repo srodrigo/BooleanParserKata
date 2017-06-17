@@ -147,4 +147,14 @@ class BooleanParserTest extends FlatSpec with Matchers {
                                 TrueValue)),
                         TrueValue))))
     }
+
+    "(T)" should "be True" in {
+        BooleanParser(
+            List(
+                OPEN_PAR,
+                TRUE_VAL,
+                CLOSE_PAR
+            )).right.get should be(
+            Parenthesis(TrueValue))
+    }
 }

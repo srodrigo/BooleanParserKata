@@ -41,6 +41,7 @@ sealed trait BooleanAST
 final case class AndOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class OrOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class NotOp(expr: BooleanAST) extends BooleanAST
+final case class Parenthesis(expr: BooleanAST) extends BooleanAST
 
 sealed trait BooleanValue extends BooleanAST
 case object TrueValue extends BooleanValue

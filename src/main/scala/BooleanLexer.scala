@@ -7,6 +7,8 @@ case object FALSE_VAL extends Token
 case object NOT_OP extends Token
 case object AND_OP extends Token
 case object OR_OP extends Token
+case object OPEN_PAR extends Token
+case object CLOSE_PAR extends Token
 
 
 object BooleanLexer extends RegexParsers {
