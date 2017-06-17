@@ -39,8 +39,9 @@ class BooleanParserTest extends FlatSpec with Matchers {
                 FALSE_VAL,
                 AND_OP,
                 TRUE_VAL)).right.get should be(
-            AndOp(
-                NotOp(FalseValue),
-                TrueValue))
+            NotOp(
+                AndOp(
+                    FalseValue,
+                    TrueValue)))
     }
 }
