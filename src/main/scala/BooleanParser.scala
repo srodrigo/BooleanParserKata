@@ -5,7 +5,6 @@ object BooleanParser extends Parsers {
     override type Elem = Token
 
     def apply(tokens: List[Token]): Either[BooleanParserError, BooleanAST] = {
-        println(tokens)
         val reader = new BooleanTokenReader(tokens)
         val ast = expression(reader) match {
             case NoSuccess(msg, _) => Left(BooleanParserError(msg))
@@ -20,12 +19,15 @@ object BooleanParser extends Parsers {
     }
 
     private def block: Parser[BooleanAST] = {
-        rep1(booleanExpr) ^^ (exprList => exprList reduceRight BooleanExpr)
+        rep1(booleanExpr) ^^ (exprList => exprList reduceRight OrOp)
     }
 
     private def booleanExpr: Parser[BooleanAST] = {
-        andOp | orOp | booleanValue
+        orOp | andOp | booleanValue
     }
+
+    private def expr: Parser[BooleanAST] =
+        andOp | booleanValue
 
     private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
     private def falseValue: Parser[BooleanAST] = FALSE_VAL ^^^ FalseValue
@@ -35,11 +37,11 @@ object BooleanParser extends Parsers {
         case negationOp ~ booleanValue => NotOp(booleanValue)
     }
 
-    private val andOp = booleanValue ~ AND_OP ~ booleanExpr ^^ {
+    private val andOp = booleanValue ~ AND_OP ~ booleanValue ^^ {
         case left ~ op ~ right => AndOp(left, right)
     }
 
-    private val orOp = booleanValue ~ OR_OP ~ booleanExpr ^^ {
+    private val orOp = expr ~ OR_OP ~ expr ^^ {
         case left ~ op ~ right => OrOp(left, right)
     }
 }
@@ -53,7 +55,6 @@ case object FalseValue extends BooleanValue
 final case class AndOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class OrOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class NotOp(expr: BooleanAST) extends BooleanAST
-final case class BooleanExpr(step1: BooleanAST, step2: BooleanAST) extends BooleanAST
 
 class BooleanTokenReader(tokens: Seq[Token]) extends Reader[Token] {
     override def first: Token = tokens.head
