@@ -4,7 +4,7 @@ sealed trait Token
 
 case object TRUE_VAL extends Token
 case object FALSE_VAL extends Token
-case object NEGATION_OP extends Token
+case object NOT_OP extends Token
 case object AND_OP extends Token
 case object OR_OP extends Token
 
@@ -30,7 +30,7 @@ object BooleanLexer extends RegexParsers {
         }
 
     private val negationOp =
-        "NOT".r ^^ { _ => NEGATION_OP }
+        "NOT".r ^^ { _ => NOT_OP }
 
     private val andOp =
         "AND".r ^^ { _ => AND_OP }

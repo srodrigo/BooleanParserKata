@@ -11,11 +11,11 @@ class BooleanParserTest extends FlatSpec with Matchers {
     }
 
     "NOT T" should "be Not Op T Expr" in {
-        BooleanParser(List(NEGATION_OP, TRUE_VAL)).right.get should be(NotOp(TrueValue))
+        BooleanParser(List(NOT_OP, TRUE_VAL)).right.get should be(NotOp(TrueValue))
     }
 
     "NOT F" should "be Not Op F Expr" in {
-        BooleanParser(List(NEGATION_OP, FALSE_VAL)).right.get should be(NotOp(FalseValue))
+        BooleanParser(List(NOT_OP, FALSE_VAL)).right.get should be(NotOp(FalseValue))
     }
 
     "T AND F" should "be And Op Expr" in {
@@ -35,7 +35,7 @@ class BooleanParserTest extends FlatSpec with Matchers {
     "NOT F AND T" should "be And Op Expr" in {
         BooleanParser(
             List(
-                NEGATION_OP,
+                NOT_OP,
                 FALSE_VAL,
                 AND_OP,
                 TRUE_VAL)).right.get should be(

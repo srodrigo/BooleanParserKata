@@ -21,9 +21,9 @@ object BooleanParser extends Parsers {
     private def term: Parser[BooleanAST] = andOp | booleanValue
     private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
     private def falseValue: Parser[BooleanAST] = FALSE_VAL ^^^ FalseValue
-    private def booleanValue: Parser[BooleanAST] = trueValue | falseValue | negatedBooleanValue
+    private def booleanValue: Parser[BooleanAST] = trueValue | falseValue | notOp
 
-    private val negatedBooleanValue = NEGATION_OP ~ booleanValue ^^ {
+    private val notOp = NOT_OP ~ booleanValue ^^ {
         case _ ~ booleanValue => NotOp(booleanValue)
     }
 
