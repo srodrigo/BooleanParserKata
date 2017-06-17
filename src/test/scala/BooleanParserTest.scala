@@ -44,7 +44,7 @@ class BooleanParserTest extends FlatSpec with Matchers {
                 TrueValue))
     }
 
-    "F AND T OR T" should "be And, Or Expr" in {
+    "F AND T OR T" should "be Or, And Expr" in {
         BooleanParser(
             List(
                 FALSE_VAL,
@@ -89,7 +89,7 @@ class BooleanParserTest extends FlatSpec with Matchers {
                     TrueValue)))
     }
 
-    "T OR F OR T" should "be Or, OR Expr" in {
+    "T OR F OR T" should "be Or, Or Expr" in {
         BooleanParser(
             List(
                 TRUE_VAL,
