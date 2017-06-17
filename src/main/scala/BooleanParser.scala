@@ -26,10 +26,7 @@ object BooleanParser extends Parsers {
         orOp | andOp | booleanValue
     }
 
-    private def orTerm: Parser[BooleanAST] =
-        andOp | booleanValue
-
-    private def andRight: Parser[BooleanAST] =
+    private def term: Parser[BooleanAST] =
         andOp | booleanValue
 
     private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
@@ -40,11 +37,11 @@ object BooleanParser extends Parsers {
         case negationOp ~ booleanValue => NotOp(booleanValue)
     }
 
-    private val andOp = booleanValue ~ AND_OP ~ andRight ^^ {
+    private val andOp = booleanValue ~ AND_OP ~ term ^^ {
         case left ~ op ~ right => AndOp(left, right)
     }
 
-    private val orOp = orTerm ~ OR_OP ~ orTerm ^^ {
+    private val orOp = term ~ OR_OP ~ booleanExpr ^^ {
         case left ~ op ~ right => OrOp(left, right)
     }
 }
