@@ -7,12 +7,12 @@ object BooleanParser extends Parsers {
     def apply(tokens: List[Token]): Either[BooleanParserError, BooleanAST] = {
         println(tokens)
         val reader = new BooleanTokenReader(tokens)
-        val result = expression(reader) match {
+        val ast = expression(reader) match {
             case NoSuccess(msg, _) => Left(BooleanParserError(msg))
             case Success(result, _) => Right(result)
         }
-        println(result)
-        result
+        println(ast)
+        ast
     }
 
     private def expression: Parser[BooleanAST] = {
