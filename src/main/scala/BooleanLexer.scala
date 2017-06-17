@@ -14,9 +14,9 @@ object BooleanLexer extends RegexParsers {
     private val TRUE = "T"
     private val FALSE = "F"
 
-    def apply(code: String): Either[BooleanLexerError, List[Token]] =
+    def apply(code: String): Either[String, List[Token]] =
         parse(tokens, code) match {
-            case NoSuccess(msg, _) => Left(BooleanLexerError(msg))
+            case NoSuccess(msg, _) => Left(msg)
             case Success(result, _) => Right(result)
         }
 

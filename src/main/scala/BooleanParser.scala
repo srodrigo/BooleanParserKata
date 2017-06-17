@@ -4,10 +4,10 @@ import scala.util.parsing.input.{NoPosition, Position, Reader}
 object BooleanParser extends Parsers {
     override type Elem = Token
 
-    def apply(tokens: List[Token]): Either[BooleanParserError, BooleanAST] = {
+    def apply(tokens: List[Token]): Either[String, BooleanAST] = {
         val reader = new BooleanTokenReader(tokens)
         expression(reader) match {
-            case NoSuccess(msg, _) => Left(BooleanParserError(msg))
+            case NoSuccess(msg, _) => Left(msg)
             case Success(result, _) => Right(result)
         }
     }
