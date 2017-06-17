@@ -5,6 +5,7 @@ object BooleanParser extends Parsers {
     override type Elem = Token
 
     def apply(tokens: List[Token]): Either[BooleanParserError, BooleanAST] = {
+        println(tokens)
         val reader = new BooleanTokenReader(tokens)
         val result = expression(reader) match {
             case NoSuccess(msg, _) => Left(BooleanParserError(msg))
@@ -34,7 +35,7 @@ object BooleanParser extends Parsers {
         case negationOp ~ booleanExpr => NotOp(booleanExpr)
     }
 
-    private val andOp = booleanValue ~ AND_OP ~ booleanValue ^^ {
+    private val andOp = booleanValue ~ AND_OP ~ booleanExpr ^^ {
         case left ~ op ~ right => AndOp(left, right)
     }
 
