@@ -44,4 +44,19 @@ class BooleanParserTest extends FlatSpec with Matchers {
                     FalseValue,
                     TrueValue)))
     }
+
+    "F AND T OR T" should "be And, Or Expr" in {
+        BooleanParser(
+            List(
+                FALSE_VAL,
+                AND_OP,
+                TRUE_VAL,
+                OR_OP,
+                TRUE_VAL)).right.get should be(
+            AndOp(
+                FalseValue,
+                OrOp(
+                    TrueValue,
+                    TrueValue)))
+    }
 }
