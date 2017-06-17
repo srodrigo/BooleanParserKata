@@ -6,10 +6,12 @@ object BooleanParser extends Parsers {
 
     def apply(tokens: List[Token]): Either[BooleanParserError, BooleanAST] = {
         val reader = new BooleanTokenReader(tokens)
-        expression(reader) match {
+        val result = expression(reader) match {
             case NoSuccess(msg, _) => Left(BooleanParserError(msg))
             case Success(result, _) => Right(result)
         }
+        println(result)
+        result
     }
 
     private def expression: Parser[BooleanAST] = {
@@ -21,14 +23,14 @@ object BooleanParser extends Parsers {
     }
 
     private def booleanExpr: Parser[BooleanAST] = {
-        negatedBooleanValueAST | andOp | orOp | booleanValue
+        negatedBooleanValue | andOp | orOp | booleanValue
     }
 
     private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
     private def falseValue: Parser[BooleanAST] = FALSE_VAL ^^^ FalseValue
     private def booleanValue: Parser[BooleanAST] = trueValue | falseValue
 
-    private val negatedBooleanValueAST = NEGATION_OP ~ booleanValue ^^ {
+    private val negatedBooleanValue = NEGATION_OP ~ booleanValue ^^ {
         case negationOp ~ booleanValue => NotOp(booleanValue)
     }
 
