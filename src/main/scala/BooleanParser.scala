@@ -21,42 +21,35 @@ object BooleanParser extends Parsers {
     }
 
     private def booleanExpr: Parser[BooleanAST] = {
-        val booleanValueAST = booleanValue ^^ (booleanVal => BooleanValue(booleanVal.bool))
-
-        val negatedBooleanValueAST = NEGATION_OP ~ booleanValue ^^ {
-            case negationOp ~ BOOLEAN_VAL(booleanVal) => NotOp(BooleanValue(booleanVal))
-        }
-
-        val andOp = booleanValue ~ AND_OP ~ booleanValue ^^ {
-            case left ~ op ~ right =>
-                AndOp(
-                    BooleanValue(left.bool),
-                    BooleanValue(right.bool))
-        }
-
-        val orOp = booleanValue ~ OR_OP ~ booleanValue ^^ {
-            case left ~ op ~ right =>
-                OrOp(
-                    BooleanValue(left.bool),
-                    BooleanValue(right.bool))
-        }
-
-        negatedBooleanValueAST | andOp | orOp | booleanValueAST
+        negatedBooleanValueAST | andOp | orOp | booleanValue
     }
 
-    private def booleanValue: Parser[BOOLEAN_VAL] = {
-        accept(
-            "boolean_value",
-            { case booleanVal @ BOOLEAN_VAL(_) => booleanVal }
-        )
+    private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
+    private def falseValue: Parser[BooleanAST] = FALSE_VAL ^^^ FalseValue
+    private def booleanValue: Parser[BooleanAST] = trueValue | falseValue
+
+    private val negatedBooleanValueAST = NEGATION_OP ~ booleanValue ^^ {
+        case negationOp ~ booleanValue => NotOp(booleanValue)
+    }
+
+    private val andOp = booleanValue ~ AND_OP ~ booleanValue ^^ {
+        case left ~ op ~ right => AndOp(left, right)
+    }
+
+    private val orOp = booleanValue ~ OR_OP ~ booleanValue ^^ {
+        case left ~ op ~ right => OrOp(left, right)
     }
 }
 
 sealed trait BooleanAST
-final case class BooleanValue(bool: Boolean) extends BooleanAST
+
+sealed trait BooleanValue extends BooleanAST
+case object TrueValue extends BooleanValue
+case object FalseValue extends BooleanValue
+
 final case class AndOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class OrOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
-final case class NotOp(booleanValue: BooleanValue) extends BooleanAST
+final case class NotOp(expr: BooleanAST) extends BooleanAST
 final case class BooleanExpr(step1: BooleanAST, step2: BooleanAST) extends BooleanAST
 
 class BooleanTokenReader(tokens: Seq[Token]) extends Reader[Token] {

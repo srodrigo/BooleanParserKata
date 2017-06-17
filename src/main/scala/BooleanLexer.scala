@@ -1,7 +1,8 @@
 import scala.util.parsing.combinator.RegexParsers
 
 sealed trait Token
-final case class BOOLEAN_VAL(bool: Boolean) extends Token
+case object TRUE_VAL extends Token
+case object FALSE_VAL extends Token
 case object NEGATION_OP extends Token
 case object AND_OP extends Token
 case object OR_OP extends Token
@@ -25,8 +26,8 @@ object BooleanLexer extends RegexParsers {
 
     private def booleanVal(bool: String) = {
         ("[" + FALSE + TRUE + "]").r ^^ { str =>
-            if (str == TRUE) BOOLEAN_VAL(true)
-            else BOOLEAN_VAL(false)
+            if (str == TRUE) TRUE_VAL
+            else FALSE_VAL
         }
     }
 

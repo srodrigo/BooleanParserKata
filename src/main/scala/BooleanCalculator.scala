@@ -10,9 +10,10 @@ object BooleanCalculator {
     }
 
     private def eval(ast: BooleanAST): Boolean = ast match {
-        case BooleanValue(bool) => bool
-        case NotOp(BooleanValue(bool)) => !bool
-        case AndOp(BooleanValue(left), BooleanValue(right)) => left && right
-        case OrOp(BooleanValue(left), BooleanValue(right)) => left || right
+        case TrueValue => true
+        case FalseValue => false
+        case NotOp(expr) => !eval(expr)
+        case AndOp(left, right) => eval(left) && eval(right)
+        case OrOp(left, right) => eval(left) || eval(right)
     }
 }
