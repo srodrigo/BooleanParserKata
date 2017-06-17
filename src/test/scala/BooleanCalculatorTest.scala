@@ -26,4 +26,8 @@ class BooleanCalculatorTest extends FlatSpec with Matchers {
     "NOT T AND F AND T OR T" should "be true" in {
         evaluate("NOT T AND F AND T OR T") should be(true)
     }
+
+    "NOT (T AND F AND T OR T)" should "be false" in {
+        evaluate("NOT (T AND F AND T OR T)") should be (false)
+    }
 }
