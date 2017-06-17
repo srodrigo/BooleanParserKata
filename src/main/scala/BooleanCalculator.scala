@@ -1,8 +1,7 @@
 object BooleanCalculator {
 
-    def evaluate(booleanExpr: String): Boolean = {
+    def evaluate(booleanExpr: String): Boolean =
         evaluateAST(buildAST(booleanExpr))
-    }
 
     private def buildAST(booleanExpr: String) = {
         val ast: Either[Object, BooleanAST] = for {
