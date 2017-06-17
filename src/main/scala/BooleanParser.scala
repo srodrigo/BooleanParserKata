@@ -39,7 +39,7 @@ object BooleanParser extends Parsers {
         case left ~ op ~ right => AndOp(left, right)
     }
 
-    private val orOp = booleanValue ~ OR_OP ~ booleanValue ^^ {
+    private val orOp = booleanValue ~ OR_OP ~ booleanExpr ^^ {
         case left ~ op ~ right => OrOp(left, right)
     }
 }
