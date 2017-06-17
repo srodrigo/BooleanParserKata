@@ -148,13 +148,20 @@ class BooleanParserTest extends FlatSpec with Matchers {
                         TrueValue))))
     }
 
-    "(T)" should "be True" in {
+    "NOT (T AND F)" should "be True" in {
         BooleanParser(
             List(
+                NOT_OP,
                 OPEN_PAR,
                 TRUE_VAL,
+                AND_OP,
+                FALSE_VAL,
                 CLOSE_PAR
             )).right.get should be(
-            Parenthesis(TrueValue))
+            NotOp(
+                Parenthesis(
+                    AndOp(
+                        TrueValue,
+                        FalseValue))))
     }
 }
