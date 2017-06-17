@@ -12,18 +12,13 @@ object BooleanParser extends Parsers {
         }
     }
 
-    private def expression: Parser[BooleanAST] =
-        phrase(block)
+    private def expression: Parser[BooleanAST] = phrase(block)
 
     private def block: Parser[BooleanAST] =
         rep1(booleanExpr) ^^ (exprList => exprList reduceRight OrOp)
 
-    private def booleanExpr: Parser[BooleanAST] =
-        orOp | andOp | booleanValue
-
-    private def term: Parser[BooleanAST] =
-        andOp | booleanValue
-
+    private def booleanExpr: Parser[BooleanAST] = orOp | andOp | booleanValue
+    private def term: Parser[BooleanAST] = andOp | booleanValue
     private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
     private def falseValue: Parser[BooleanAST] = FALSE_VAL ^^^ FalseValue
     private def booleanValue: Parser[BooleanAST] = trueValue | falseValue | negatedBooleanValue
