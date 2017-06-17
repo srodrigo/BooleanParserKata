@@ -27,8 +27,8 @@ object BooleanParser extends Parsers {
         case _ ~ booleanValue => NotOp(booleanValue)
     }
 
-    private val notOpPar = NOT_OP ~ OPEN_PAR ~ term ~ CLOSE_PAR ^^ {
-        case _ ~ _ ~ term ~ _ => NotOp(term)
+    private val notOpPar = NOT_OP ~ OPEN_PAR ~ booleanExpr ~ CLOSE_PAR ^^ {
+        case _ ~ _ ~ expr ~ _ => NotOp(expr)
     }
 
     private val andOp = booleanValue ~ AND_OP ~ term ^^ {

@@ -97,8 +97,7 @@ class BooleanParserTest extends FlatSpec with Matchers {
                 AND_OP,
                 FALSE_VAL,
                 AND_OP,
-                TRUE_VAL
-            )).right.get should be(
+                TRUE_VAL)).right.get should be(
             AndOp(
                 TrueValue,
                 AndOp(FalseValue,
@@ -112,8 +111,7 @@ class BooleanParserTest extends FlatSpec with Matchers {
                 OR_OP,
                 FALSE_VAL,
                 OR_OP,
-                TRUE_VAL
-            )).right.get should be(
+                TRUE_VAL)).right.get should be(
             OrOp(
                 TrueValue,
                 OrOp(FalseValue,
@@ -133,8 +131,7 @@ class BooleanParserTest extends FlatSpec with Matchers {
                 AND_OP,
                 TRUE_VAL,
                 OR_OP,
-                TRUE_VAL
-            )).right.get should be(
+                TRUE_VAL)).right.get should be(
             OrOp(
                 TrueValue,
                 OrOp(
@@ -156,11 +153,29 @@ class BooleanParserTest extends FlatSpec with Matchers {
                 TRUE_VAL,
                 AND_OP,
                 FALSE_VAL,
-                CLOSE_PAR
-            )).right.get should be(
+                CLOSE_PAR)).right.get should be(
             NotOp(
                 AndOp(
                     TrueValue,
                     FalseValue)))
+    }
+
+    "NOT (T AND F OR T)" should "be False" in {
+        BooleanParser(
+            List(
+                NOT_OP,
+                OPEN_PAR,
+                TRUE_VAL,
+                AND_OP,
+                FALSE_VAL,
+                OR_OP,
+                TRUE_VAL,
+                CLOSE_PAR)).right.get should be(
+            NotOp(
+                OrOp(
+                    AndOp(
+                        TrueValue,
+                        FalseValue),
+                    TrueValue)))
     }
 }
