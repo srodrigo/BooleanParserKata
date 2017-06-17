@@ -6,25 +6,20 @@ object BooleanParser extends Parsers {
 
     def apply(tokens: List[Token]): Either[BooleanParserError, BooleanAST] = {
         val reader = new BooleanTokenReader(tokens)
-        val ast = expression(reader) match {
+        expression(reader) match {
             case NoSuccess(msg, _) => Left(BooleanParserError(msg))
             case Success(result, _) => Right(result)
         }
-        println(ast)
-        ast
     }
 
-    private def expression: Parser[BooleanAST] = {
+    private def expression: Parser[BooleanAST] =
         phrase(block)
-    }
 
-    private def block: Parser[BooleanAST] = {
+    private def block: Parser[BooleanAST] =
         rep1(booleanExpr) ^^ (exprList => exprList reduceRight OrOp)
-    }
 
-    private def booleanExpr: Parser[BooleanAST] = {
+    private def booleanExpr: Parser[BooleanAST] =
         orOp | andOp | booleanValue
-    }
 
     private def term: Parser[BooleanAST] =
         andOp | booleanValue
@@ -34,27 +29,27 @@ object BooleanParser extends Parsers {
     private def booleanValue: Parser[BooleanAST] = trueValue | falseValue | negatedBooleanValue
 
     private val negatedBooleanValue = NEGATION_OP ~ booleanValue ^^ {
-        case negationOp ~ booleanValue => NotOp(booleanValue)
+        case _ ~ booleanValue => NotOp(booleanValue)
     }
 
     private val andOp = booleanValue ~ AND_OP ~ term ^^ {
-        case left ~ op ~ right => AndOp(left, right)
+        case left ~ _ ~ right => AndOp(left, right)
     }
 
     private val orOp = term ~ OR_OP ~ booleanExpr ^^ {
-        case left ~ op ~ right => OrOp(left, right)
+        case left ~ _ ~ right => OrOp(left, right)
     }
 }
 
 sealed trait BooleanAST
 
-sealed trait BooleanValue extends BooleanAST
-case object TrueValue extends BooleanValue
-case object FalseValue extends BooleanValue
-
 final case class AndOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class OrOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
 final case class NotOp(expr: BooleanAST) extends BooleanAST
+
+sealed trait BooleanValue extends BooleanAST
+case object TrueValue extends BooleanValue
+case object FalseValue extends BooleanValue
 
 class BooleanTokenReader(tokens: Seq[Token]) extends Reader[Token] {
     override def first: Token = tokens.head
