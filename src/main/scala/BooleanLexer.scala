@@ -23,7 +23,7 @@ object BooleanLexer extends RegexParsers {
         }
 
     def tokens: Parser[List[Token]] =
-        phrase(rep1(booleanVal(TRUE) | booleanVal(FALSE) | negationOp | andOp | orOp))
+        phrase(rep1(booleanVal(TRUE) | booleanVal(FALSE) | negationOp | andOp | orOp | openPar | closePar))
 
     private def booleanVal(bool: String) =
         ("[" + FALSE + TRUE + "]").r ^^ { str =>
@@ -39,4 +39,11 @@ object BooleanLexer extends RegexParsers {
 
     private val orOp =
         "OR".r ^^ { _ => OR_OP }
+
+    private val openPar =
+        "\\(".r ^^ { _ => OPEN_PAR}
+
+    private val closePar =
+        "\\(".r ^^ { _ => CLOSE_PAR}
+
 }

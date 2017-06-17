@@ -159,9 +159,8 @@ class BooleanParserTest extends FlatSpec with Matchers {
                 CLOSE_PAR
             )).right.get should be(
             NotOp(
-                Parenthesis(
-                    AndOp(
-                        TrueValue,
-                        FalseValue))))
+                AndOp(
+                    TrueValue,
+                    FalseValue)))
     }
 }
