@@ -17,8 +17,8 @@ object BooleanParser extends Parsers {
     private def block: Parser[BooleanAST] =
         rep1(booleanExpr) ^^ (exprList => exprList reduceRight OrOp)
 
-    private def booleanExpr: Parser[BooleanAST] = orOp | andOp | booleanValue
-    private def term: Parser[BooleanAST] = andOp | booleanValue
+    private def booleanExpr: Parser[BooleanAST] = orOp | andOp | andOpPar | booleanValue
+    private def term: Parser[BooleanAST] = andOp | andOpPar | booleanValue
     private def booleanValue: Parser[BooleanAST] = trueValue | falseValue | notOp | notOpPar
     private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
     private def falseValue: Parser[BooleanAST] = FALSE_VAL ^^^ FalseValue
@@ -33,6 +33,10 @@ object BooleanParser extends Parsers {
 
     private val andOp = booleanValue ~ AND_OP ~ term ^^ {
         case left ~ _ ~ right => AndOp(left, right)
+    }
+
+    private val andOpPar = booleanValue ~ AND_OP ~ OPEN_PAR ~ booleanExpr ~ CLOSE_PAR ^^ {
+        case left ~ _ ~ _ ~ expr ~ _ => AndOp(left, expr)
     }
 
     private val orOp = term ~ OR_OP ~ booleanExpr ^^ {
