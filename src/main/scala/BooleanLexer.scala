@@ -44,6 +44,6 @@ object BooleanLexer extends RegexParsers {
         "\\(".r ^^ { _ => OPEN_PAR}
 
     private val closePar =
-        "\\(".r ^^ { _ => CLOSE_PAR}
+        "\\)".r ^^ { _ => CLOSE_PAR}
 
 }
