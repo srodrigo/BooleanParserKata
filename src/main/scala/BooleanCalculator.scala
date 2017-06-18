@@ -1,13 +1,13 @@
 object BooleanCalculator {
 
     def evaluate(booleanExpr: String): Boolean =
-        evaluateAST(buildAST(booleanExpr))
+        evaluateAst(buildAst(booleanExpr))
 
     def astAsString(booleanExpr: String): String =
-        formatAST(buildAST(booleanExpr))
+        formatAst(buildAst(booleanExpr))
 
-    private def buildAST(booleanExpr: String) = {
-        val ast: Either[Object, BooleanAST] = for {
+    private def buildAst(booleanExpr: String) = {
+        val ast: Either[Object, BooleanAst] = for {
             tokens <- BooleanLexer(booleanExpr).right
             ast <- BooleanParser(tokens).right
         } yield ast
@@ -15,19 +15,19 @@ object BooleanCalculator {
         ast.right.get
     }
 
-    private def evaluateAST(ast: BooleanAST): Boolean = ast match {
+    private def evaluateAst(ast: BooleanAst): Boolean = ast match {
         case TrueValue => true
         case FalseValue => false
-        case NotOp(expr) => !evaluateAST(expr)
-        case AndOp(left, right) => evaluateAST(left) && evaluateAST(right)
-        case OrOp(left, right) => evaluateAST(left) || evaluateAST(right)
+        case NotOp(expr) => !evaluateAst(expr)
+        case AndOp(left, right) => evaluateAst(left) && evaluateAst(right)
+        case OrOp(left, right) => evaluateAst(left) || evaluateAst(right)
     }
 
-    def formatAST(ast: BooleanAST): String = ast match {
+    def formatAst(ast: BooleanAst): String = ast match {
         case TrueValue => "T"
         case FalseValue => "F"
-        case NotOp(expr) => "NOT - " + formatAST(expr)
-        case AndOp(left, right) => "AND - " + formatAST(left) + " | " + formatAST(right)
-        case OrOp(left, right) => "OR - " + formatAST(left) + " | " + formatAST(right)
+        case NotOp(expr) => "NOT - " + formatAst(expr)
+        case AndOp(left, right) => "AND - " + formatAst(left) + " | " + formatAst(right)
+        case OrOp(left, right) => "OR - " + formatAst(left) + " | " + formatAst(right)
     }
 }

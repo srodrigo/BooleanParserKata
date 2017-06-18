@@ -4,7 +4,7 @@ import scala.util.parsing.input.{NoPosition, Position, Reader}
 object BooleanParser extends Parsers {
     override type Elem = Token
 
-    def apply(tokens: List[Token]): Either[String, BooleanAST] = {
+    def apply(tokens: List[Token]): Either[String, BooleanAst] = {
         val reader = new BooleanTokenReader(tokens)
         expression(reader) match {
             case NoSuccess(msg, _) => Left(msg)
@@ -12,16 +12,16 @@ object BooleanParser extends Parsers {
         }
     }
 
-    private def expression: Parser[BooleanAST] = phrase(block)
+    private def expression: Parser[BooleanAst] = phrase(block)
 
-    private def block: Parser[BooleanAST] =
+    private def block: Parser[BooleanAst] =
         rep1(booleanExpr) ^^ (exprList => exprList reduceRight OrOp)
 
-    private def booleanExpr: Parser[BooleanAST] = orOp | andOp | andOpPar | booleanValue
-    private def term: Parser[BooleanAST] = andOp | andOpPar | booleanValue
-    private def booleanValue: Parser[BooleanAST] = trueValue | falseValue | notOp | notOpPar
-    private def trueValue: Parser[BooleanAST] = TRUE_VAL ^^^ TrueValue
-    private def falseValue: Parser[BooleanAST] = FALSE_VAL ^^^ FalseValue
+    private def booleanExpr: Parser[BooleanAst] = orOp | andOp | andOpPar | booleanValue
+    private def term: Parser[BooleanAst] = andOp | andOpPar | booleanValue
+    private def booleanValue: Parser[BooleanAst] = trueValue | falseValue | notOp | notOpPar
+    private def trueValue: Parser[BooleanAst] = TRUE_VAL ^^^ TrueValue
+    private def falseValue: Parser[BooleanAst] = FALSE_VAL ^^^ FalseValue
 
     private val notOp = NOT_OP ~ booleanValue ^^ {
         case _ ~ booleanValue => NotOp(booleanValue)
@@ -44,14 +44,14 @@ object BooleanParser extends Parsers {
     }
 }
 
-sealed trait BooleanAST
+sealed trait BooleanAst
 
-final case class AndOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
-final case class OrOp(left: BooleanAST, right: BooleanAST) extends BooleanAST
-final case class NotOp(expr: BooleanAST) extends BooleanAST
-final case class Parenthesis(expr: BooleanAST) extends BooleanAST
+final case class AndOp(left: BooleanAst, right: BooleanAst) extends BooleanAst
+final case class OrOp(left: BooleanAst, right: BooleanAst) extends BooleanAst
+final case class NotOp(expr: BooleanAst) extends BooleanAst
+final case class Parenthesis(expr: BooleanAst) extends BooleanAst
 
-sealed trait BooleanValue extends BooleanAST
+sealed trait BooleanValue extends BooleanAst
 case object TrueValue extends BooleanValue
 case object FalseValue extends BooleanValue
 
