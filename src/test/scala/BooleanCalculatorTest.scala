@@ -35,7 +35,9 @@ class BooleanCalculatorTest extends FlatSpec with Matchers {
         evaluate("T AND (F AND T OR F)") should be (false)
     }
 
-    "NOT (T AND F AND T OR T)" should "print AST" in {
-        println(astAsString("NOT (T AND F AND T OR T)"))
+    "NOT (T AND F AND T OR T)" should "format AST as string" in {
+        astAsString("NOT (T AND F AND T OR T)") should be (
+            "\n          NOT\n           |\n          OR\n         /  \\      \n      AND    T\n     /   \\ \n  AND     T\n /   \\\nT     F\n"
+        )
     }
 }
