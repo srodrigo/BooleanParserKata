@@ -1,5 +1,5 @@
 import org.scalatest.{FlatSpec, Matchers}
-import BooleanCalculator.evaluate
+import BooleanCalculator.{evaluate, astAsString}
 
 class BooleanCalculatorTest extends FlatSpec with Matchers {
 
@@ -33,5 +33,9 @@ class BooleanCalculatorTest extends FlatSpec with Matchers {
 
     "T AND (F AND T OR F)" should "be false" in {
         evaluate("T AND (F AND T OR F)") should be (false)
+    }
+
+    "NOT (T AND F AND T OR T)" should "print AST" in {
+        println(astAsString("NOT (T AND F AND T OR T)"))
     }
 }
