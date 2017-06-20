@@ -26,8 +26,8 @@ object BooleanCalculator {
     def formatAst(ast: BooleanAst): String = ast match {
         case TrueValue => "T"
         case FalseValue => "F"
-        case NotOp(expr) => "NOT " + formatAst(expr)
-        case AndOp(left, right) => "AND (" + formatAst(left) + ", " + formatAst(right) + ")"
-        case OrOp(left, right) => "OR (" + formatAst(left) + ", " + formatAst(right) + ")"
+        case NotOp(expr) => s"NOT (${formatAst(expr)})"
+        case AndOp(left, right) => s"AND (${formatAst(left)}, ${formatAst(right)})"
+        case OrOp(left, right) => s"OR (${formatAst(left)}, ${formatAst(right)})"
     }
 }
