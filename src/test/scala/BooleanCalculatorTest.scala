@@ -36,8 +36,10 @@ class BooleanCalculatorTest extends FlatSpec with Matchers {
     }
 
     "NOT (T AND F AND T OR T)" should "format AST as string" in {
-        astAsString("NOT (T AND F AND T OR T)") should be (
-            "\n          NOT\n           |\n          OR\n         /  \\      \n      AND    T\n     /   \\ \n  AND     T\n /   \\\nT     F\n"
-        )
+        astAsString("NOT (T AND F AND T OR T)") should be ("NOT (OR (AND (AND (T, F), T), T))")
+    }
+
+    "T OR F OR T AND F AND T OR T" should "format AST as string" in {
+        astAsString("T OR F OR T AND F AND T OR T") should be ("OR (T, OR (F, OR (AND (T, AND (F, T)), T)))")
     }
 }
